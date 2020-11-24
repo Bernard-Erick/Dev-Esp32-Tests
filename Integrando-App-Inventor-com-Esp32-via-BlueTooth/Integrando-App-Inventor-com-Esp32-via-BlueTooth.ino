@@ -8,13 +8,13 @@
 
 BluetoothSerial SerialBT;
 int ledAmarelo = 4;
-
+int qtdBytes = 0;
 
 void setup() {
 
   Serial.begin(115200);
 
-  SerialBT.begin("ESP32test"); //Bluetooth device name
+  SerialBT.begin("e-s-p-3-2"); //Bluetooth device name
 
   Serial.println("The device started, now you can pair it with bluetooth!");
 
@@ -24,22 +24,21 @@ void setup() {
 
 
 void loop() {
-
-  if (Serial.available()) {
-
+  
+  if (Serial.available() > 0) {
     SerialBT.write(Serial.read());
-
+    
   }
 
-  if (SerialBT.available()) {
-    if(SerialBT.read() == "Liga"){
+  if (SerialBT.available() > 0) {
+    qtdBytes = SerialBT.read();
+    if(qtdBytes == 65){
       digitalWrite(ledAmarelo,HIGH);
     }
-    if(SerialBT.read() == "Desliga"){
+    if(qtdBytes == 66){
       digitalWrite(ledAmarelo,LOW);
     }
     Serial.write(SerialBT.read());
-
   }
 
   delay(20);
